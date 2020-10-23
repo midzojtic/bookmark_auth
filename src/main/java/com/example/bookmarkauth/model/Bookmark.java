@@ -60,5 +60,14 @@ public class Bookmark {
         this.name = name;
     }
 
-
+    @Override
+    public String toString() {
+        return "Bookmark{" +
+                "link='" + link + '\'' +
+                ", type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", userId=" + userId +
+                ", bookmarkId=" + bookmarkId +
+                '}';
+    }
 }

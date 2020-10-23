@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,7 +38,7 @@ public class BookmarkController {
     }
 
     /**
-     * This method is used for listing all public bookmarks for public user with message
+     * This method is used for listing all public bookmarks for user with message
      *
      * @return list of public bookmarks
      */
@@ -127,7 +129,7 @@ public class BookmarkController {
     }
 
     /**
-     * This method is used for listing all public bookmarks for public user with message
+     * This method is used for listing all private bookmarks for user with message
      *
      * @return list of public bookmarks
      */
@@ -150,26 +152,27 @@ public class BookmarkController {
             return RestDto.fail("User does not exist: " + username);
         }
 
-        List<Bookmark> list = bookmarkService.getAllPublicAndPrivateBookmarks(user.getId());
+        List<Bookmark> list = bookmarkService.getAllPrivateBookmarks(user.getId());
 
-        LOG.trace("Public and private bookmarks: {}", list);
+        LOG.trace("Private bookmarks: {}", list);
 
-        return RestDto.success(list, "Successfully loaded public and private bookmarks");
+        return RestDto.success(list, "Successfully loaded private bookmarks");
 
     }
 
     /**
      * This method is used for updating bookmark
      *
-     * @param bookmarkOld
-     * @param bookmarkNew
      * @return message success
      */
     @PutMapping("updateBookmark")
     @ResponseBody
-    public RestDto<String> updateBookmark(@RequestBody @Valid Bookmark bookmarkOld, @RequestBody @Valid Bookmark bookmarkNew) {
+    public RestDto<String> updateBookmark(@RequestBody @NotNull Map<String, Bookmark> map) {
 
         LOG.info("Accessed BookmarkController.updateBookmark");
+
+        Bookmark bookmarkOld = map.get("old");
+        Bookmark bookmarkNew = map.get("nev");
 
         LOG.trace("Old bookmark: {}", bookmarkOld);
         LOG.trace("New bookmark: {}", bookmarkNew);
@@ -225,7 +228,7 @@ public class BookmarkController {
         LOG.trace("User: {}", user);
 
         return bookmarkService.deleteBookmark(bookmark.getName(), user.getId()) ? RestDto.success("Bookmark successfully deleted")
-                : RestDto.fail("Failed to delete bookmark");
+                : RestDto.fail("Bookmark is already deleted or user is not owner of bookmark");
 
     }
 

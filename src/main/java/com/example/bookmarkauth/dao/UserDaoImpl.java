@@ -24,10 +24,7 @@ public class UserDaoImpl implements UserDao {
     private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private static final String INSERT_INTO_USER = "INSERT INTO users(username, password) values (? , ?)";
-    private static final String INSERT_INTO_USER_USER_TYPE = "INSERT INTO users_user_type(user_id, user_type_id)" +
-            " SELECT ?, user_type_id from user_type where code = ? ";
-    private static final String SELECT_FROM_USER = "SELECT u.user_id, u.username, u.password, ut.code FROM users u JOIN users_user_type uut " +
-            " ON u.user_id = uut.user_id JOIN user_type ut ON uut.user_type_id = ut.user_type_id WHERE username = ? ";
+    private static final String SELECT_FROM_USER = "SELECT user_id, username, password FROM users WHERE username = ? ";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -53,13 +50,6 @@ public class UserDaoImpl implements UserDao {
         }, keyHolder);
 
         return Long.parseLong(keyHolder.getKeys().get("user_id").toString());
-    }
-
-    @Override
-    public long insertUserUserType(long userId, String userType) {
-
-        LOG.trace("Accessed UserDaoImpl.insertUserUserType, userId: {}, userType: {}", userId, userType);
-        return jdbcTemplate.update(INSERT_INTO_USER_USER_TYPE, userId, userType);
     }
 
     @Override

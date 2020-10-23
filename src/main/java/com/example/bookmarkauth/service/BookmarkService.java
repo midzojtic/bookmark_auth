@@ -79,9 +79,9 @@ public class BookmarkService {
      * @param userId
      * @return list
      */
-    public List<Bookmark> getAllPublicAndPrivateBookmarks(long userId) {
-        LOG.debug("Accessed BookmarkService.getAllPublicAndPrivateBookmarks");
-        return bookmarkDaoImpl.getAllPublicAndPrivateBookmarsForUser(userId);
+    public List<Bookmark> getAllPrivateBookmarks(long userId) {
+        LOG.debug("Accessed BookmarkService.getAllPrivateBookmarks");
+        return bookmarkDaoImpl.getAllPrivateBookmarks(userId);
     }
 
     /**
@@ -101,9 +101,9 @@ public class BookmarkService {
 
         long bookmarkId = bookmark.getBookmarkId();
 
-        bookmarkDaoImpl.deleteFromBookmark(bookmarkId);
         bookmarkDaoImpl.deleteFromBookmarkBookmar(bookmarkId);
         bookmarkDaoImpl.deleteFromUserBookmark(bookmarkId);
+        bookmarkDaoImpl.deleteFromBookmark(bookmarkId);
 
         return true;
 
@@ -130,7 +130,7 @@ public class BookmarkService {
 
         LOG.trace("Bookmark: {}", bookmarkNew);
 
-        bookmarkDaoImpl.updateBoookmark(bookmarkNew);
+        bookmarkDaoImpl.updateBoookmark(bookmarkDB, bookmarkNew);
 
         return true;
 

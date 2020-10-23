@@ -15,13 +15,13 @@ public interface BookmarkDao {
 
     long insertUserBookmark(long userId, long bookmarkId);
 
-    List<Bookmark> getAllPublicAndPrivateBookmarsForUser(long userId);
+    List<Bookmark> getAllPrivateBookmarks(long userId);
 
     Bookmark getBookmark(String name, long userId);
 
     long deleteFromBookmark(long bookmarkId);
 
-    long updateBoookmark(Bookmark bookmark);
+    long updateBoookmark(Bookmark bookmarkOld, Bookmark bookmarkNew);
 
     long deleteFromUserBookmark(long bookmarkId);
 

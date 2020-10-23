@@ -38,11 +38,11 @@ public class UserController {
      * @param user
      * @return success of fail message
      */
-    @PostMapping("register/publicUser")
+    @PostMapping("register")
     public @ResponseBody
-    RestDto<String> publicUser(@RequestBody @Valid User user) {
+    RestDto<String> register(@RequestBody @Valid User user) {
 
-        LOG.info("Accessed BookmarkController.user");
+        LOG.info("Accessed BookmarkController.register");
 
         LOG.trace("user => {}", user);
 
@@ -50,31 +50,8 @@ public class UserController {
             return RestDto.fail("Public user already exisits");
         }
 
-        return userService.insertPublicUser(user) ? RestDto.success("Public user successfully added")
+        return userService.insertUser(user) ? RestDto.success("Public user successfully added")
                 : RestDto.fail("Error while adding public user");
-
-    }
-
-    /**
-     * This method is used for registering new user
-     *
-     * @param user
-     * @return success of fail message
-     */
-    @PostMapping("register/privateUser")
-    public @ResponseBody
-    RestDto<String> privateUser(@RequestBody @Valid User user) {
-
-        LOG.info("Accessed BookmarkController.user");
-
-        LOG.trace("user => {}", user);
-
-        if (userService.getUserByUsername(user.getUsername()) != null) {
-            return RestDto.fail("Private user already exisits");
-        }
-
-        return userService.insertPrivateUser(user) ? RestDto.success("Private user successfully added")
-                : RestDto.fail("Error while adding private user");
 
     }
 
